@@ -85,8 +85,9 @@ jobs:
           php -d extension=$(pwd)/osf.so -r '
             $d = json_decode(file_get_contents("kat/test-vectors.json"), true);
             $v = $d["stateVectors"][0]; $k = $v["k"]; $ex = $v["expected"];
-            $c = array_values($k["coordinates"]); $a = array_values($k["rotationAxis"]);
-            $got = osf_state_hash($c, $a, $k["angularSpeed"], $k["initialTimestamp"], $v["t"], $v["nonce"]);
+            $c = array_map("floatval", array_values($k["coordinates"]));
+            $a = array_map("floatval", array_values($k["rotationAxis"]));
+            $got = osf_state_hash($c, $a, floatval($k["angularSpeed"]), (int)$k["initialTimestamp"], (int)$v["t"], $v["nonce"]);
             if ($got !== $ex["stateHashNonce"]) { fwrite(STDERR, "MISMATCH $got\n"); exit(1); }
             echo "PHP ext KAT[0] OK: $got\n";
             echo "osf_version=", osf_version(), " delta(space)=", osf_delta_ms("space"), "\n";
