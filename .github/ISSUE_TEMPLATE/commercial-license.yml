@@ -1,0 +1,74 @@
+name: Commercial license request
+description: Request a commercial / production license for OSF (patent-inclusive). Noncommercial use is already free — see LICENSE.
+title: "[Commercial] <your company>"
+labels: ["commercial-license"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        OSF is dual-licensed. **Noncommercial** use is free under the PolyForm
+        Noncommercial License. **Commercial / production** use requires a separate
+        license that includes a patent grant for **PCT WO 2025/127469 A1**.
+
+        Terms (scope, territory, term, fees, support) are set per engagement — we
+        will follow up. You may also email **official@winnerbrothers.org** directly.
+        Do not include secrets or confidential details in this public issue.
+  - type: input
+    id: org
+    attributes:
+      label: Company / organization (legal name)
+      placeholder: Example, Inc.
+    validations:
+      required: true
+  - type: input
+    id: website
+    attributes:
+      label: Website
+      placeholder: https://example.com
+    validations:
+      required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact name + email
+      placeholder: Jane Doe <jane@example.com>
+    validations:
+      required: true
+  - type: dropdown
+    id: use
+    attributes:
+      label: Intended use
+      options:
+        - Ship inside a paid product or service
+        - Internal use in production (for-profit)
+        - Redistribute in a commercial / closed-source offering
+        - Evaluation now, production later
+        - Other (describe below)
+    validations:
+      required: true
+  - type: dropdown
+    id: scale
+    attributes:
+      label: Rough scale
+      options:
+        - Startup / early stage
+        - SMB
+        - Enterprise
+        - Government / defense
+        - Not sure yet
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: How you intend to use OSF
+      description: What you are building, where OSF fits (login, messaging, coin/tx, defense command auth, other).
+    validations:
+      required: true
+  - type: checkboxes
+    id: ack
+    attributes:
+      label: Acknowledgement
+      options:
+        - label: I understand commercial/production use requires a license covering both copyright and the patent (PCT WO 2025/127469 A1).
+          required: true

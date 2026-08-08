@@ -125,7 +125,14 @@ Dual-licensed:
 - **Commercial / production** — requires a **separate commercial license**
   that bundles the patent grant for **PCT WO 2025/127469 A1**. See
   [LICENSE-COMMERCIAL.md](./LICENSE-COMMERCIAL.md) and [PATENTS.md](./PATENTS.md).
-  Contact: official@winnerbrothers.org
+  Request one via the
+  [commercial license issue form](https://github.com/winnerbrothers/osf/issues/new?template=commercial-license.yml)
+  or official@winnerbrothers.org.
+
+**Security:** OSF's security rests on the secret key. Default key storage is
+plaintext process memory (not an HSM) and the forward-secrecy layer is
+classical, not post-quantum — read [SECURITY.md](./SECURITY.md) before
+deploying. Vulnerability reports: see SECURITY.md.
 
 Copyright and patent are separate rights: a permissive copyright license would
 not by itself grant the right to practice the patent commercially — hence the

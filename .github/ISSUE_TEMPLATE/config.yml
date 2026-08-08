@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Commercial license (email)
+    url: mailto:official@winnerbrothers.org
+    about: Prefer email? Contact us directly for a commercial / production license (patent-inclusive).
+  - name: Security / vulnerability disclosure
+    url: https://github.com/winnerbrothers/osf/blob/main/SECURITY.md
+    about: Report a vulnerability privately (do not open a public issue for unpatched bugs).
+  - name: Public forgery challenge
+    url: https://winnerbrothers.github.io/osf/
+    about: Try to break OSF — forge a tag, get on the wall.

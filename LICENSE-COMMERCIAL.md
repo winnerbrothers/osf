@@ -23,10 +23,12 @@ a **patent license** to practice **PCT WO 2025/127469 A1** for the agreed scope.
 - **Inventor / applicant (patent):** LEE JUNGHOON (이정훈) — natural person
 - **Authorized domestic agent (KR):** Human ICT (영업 위임)
 
-## Contact for commercial terms
+## Request a commercial license
 
-- official@winnerbrothers.org (business)
-- jason@winnerbrothers.org
+- **GitHub:** open a [Commercial license request](https://github.com/winnerbrothers/osf/issues/new?template=commercial-license.yml) issue, or
+- **Email:** official@winnerbrothers.org (business) · jason@winnerbrothers.org
+
+Pricing is set per engagement (not published) — we follow up with terms.
 
 > This file is a notice, not the commercial agreement itself. Commercial terms
 > (scope, territory, term, fees, support) are set in a signed contract. Consult

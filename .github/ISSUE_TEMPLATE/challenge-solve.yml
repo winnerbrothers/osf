@@ -1,0 +1,32 @@
+name: SOLVED — challenge submission
+description: Claim a solve of the public OSF forgery challenge. Your tag is verified against commit_tag.
+title: "SOLVED: <short note>"
+labels: ["challenge-solve"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You believe you forged the tag. We verify `SHA-256(your tag) == commit_tag`
+        (published in `challenge/challenge.json`) and, if it matches, add you to the
+        [Hall of Fame](../blob/main/challenge/HALL_OF_FAME.md).
+  - type: input
+    id: tag
+    attributes:
+      label: Your forged tag* (64 hex chars)
+      placeholder: 64 lowercase hex characters
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Method
+      description: How you produced it (so others can reproduce). Include the recovered key K if you found it.
+    validations:
+      required: true
+  - type: input
+    id: credit
+    attributes:
+      label: How to credit you
+      placeholder: name / handle / link (optional)
+    validations:
+      required: false
