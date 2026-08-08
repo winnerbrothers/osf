@@ -20,6 +20,9 @@ venv/
 # node
 node_modules/
 
+# challenge secret — the key K + tag*; NEVER commit
+challenge/secret.json
+
 # editor / os
 .DS_Store
 .idea/

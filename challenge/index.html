@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Break OSF — public forgery challenge</title>
+<style>
+  :root{
+    --bg:#0b0f17; --panel:#121826; --panel2:#0e1420; --ink:#e6edf6; --muted:#8b97a8;
+    --line:#222c3d; --accent:#4fd6b8; --accent2:#7aa2ff; --bad:#ff6b6b; --good:#3ddc84;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  a{color:var(--accent2)}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px}
+  header{padding:64px 0 40px;text-align:center;border-bottom:1px solid var(--line)}
+  h1{font-size:clamp(30px,6vw,52px);margin:0 0 8px;letter-spacing:-.02em}
+  h1 .osf{color:var(--accent)}
+  .sub{color:var(--muted);font-size:clamp(15px,2.5vw,19px)}
+  .pill{display:inline-block;margin-top:18px;padding:6px 14px;border:1px solid var(--line);
+    border-radius:999px;font:13px var(--mono);color:var(--muted)}
+  section{padding:40px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:22px;margin:0 0 14px}
+  h2 .n{color:var(--accent);font:14px var(--mono);margin-right:8px}
+  p{color:#c7d0dd}
+  code,kbd{font:13px var(--mono);background:var(--panel);border:1px solid var(--line);
+    padding:1px 6px;border-radius:6px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin:14px 0}
+  .kv{display:grid;grid-template-columns:170px 1fr;gap:8px 16px;font:13px var(--mono)}
+  .kv div:nth-child(odd){color:var(--muted)}
+  .kv .hash{word-break:break-all;color:var(--accent)}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:0}
+  .steps li{counter-increment:s;position:relative;padding:10px 0 10px 42px;color:#c7d0dd}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:8px;width:28px;height:28px;
+    display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;
+    color:var(--accent);font:13px var(--mono);background:var(--panel2)}
+  .verify{background:linear-gradient(180deg,#101a2b,#0e1420)}
+  textarea,input[type=text]{width:100%;background:var(--panel2);color:var(--ink);
+    border:1px solid var(--line);border-radius:10px;padding:12px;font:14px var(--mono)}
+  button{margin-top:12px;background:var(--accent);color:#04231c;border:0;border-radius:10px;
+    padding:12px 22px;font-size:15px;font-weight:700;cursor:pointer}
+  button:hover{filter:brightness(1.08)}
+  #result{margin-top:16px;font:15px var(--mono);min-height:24px}
+  .win{color:var(--good)} .lose{color:var(--bad)} .info{color:var(--muted)}
+  .muted{color:var(--muted)} .small{font-size:13px}
+  footer{padding:36px 0 60px;color:var(--muted);font-size:13px;text-align:center}
+  details{margin-top:10px} summary{cursor:pointer;color:var(--accent2)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}.kv{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Break <span class="osf">OSF</span>.</h1>
+  <div class="sub">Forge one authentication tag without the key. Get on the wall.</div>
+  <div class="pill">Orbital State Function · PCT WO 2025/127469 · pip install planet-osf</div>
+</div></header>
+
+<div class="wrap">
+
+<section>
+  <h2><span class="n">01</span>The claim</h2>
+  <p>OSF authenticates by a secret key <code>K = (p₀, â, ω, t₀)</code>. At time <code>t</code> it
+  emits a tag <code>H( s_K(t) ‖ nonce )</code>. Security rests on the key being secret — the
+  algorithm is <a href="https://github.com/winnerbrothers/osf">fully open</a>
+  (<em>Kerckhoffs's principle</em>). We claim: <strong>seeing any number of past tags does not let
+  you forge the next one.</strong> Prove us wrong.</p>
+</section>
+
+<section>
+  <h2><span class="n">02</span>How this challenge works</h2>
+  <ol class="steps">
+    <li>We generated a fresh secret key <code>K</code> and published <strong id="ntr">…</strong>
+      real authentication transcripts <code>{t, nonce, tag}</code> — exactly what a network
+      eavesdropper would capture.</li>
+    <li>We picked one fresh target <code>(t*, nonce*)</code> and published <em>only</em>
+      <code>commit_tag = SHA-256(tag*)</code>. The correct <code>tag*</code> and the key <code>K</code>
+      stay secret.</li>
+    <li>You win by producing <code>tag*</code>. Paste it below — your browser checks
+      <code>SHA-256(your tag) == commit_tag</code>. No server, no telemetry, nothing to trust but math.</li>
+    <li><code>commit_k = SHA-256(K)</code> is published now so we cannot swap keys later. When the
+      challenge ends we reveal <code>K</code>; anyone can then recompute every transcript and
+      <code>tag*</code> to confirm the challenge was honest.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">03</span>The challenge</h2>
+  <div class="card">
+    <div class="kv" id="cdata">
+      <div>transcripts</div><div id="k-n">loading…</div>
+      <div>challenge t*</div><div id="k-t"></div>
+      <div>challenge nonce*</div><div class="hash" id="k-non"></div>
+      <div>commit_tag</div><div class="hash" id="k-ct"></div>
+      <div>commit_k</div><div class="hash" id="k-ck"></div>
+    </div>
+    <details>
+      <summary>view all transcripts (raw)</summary>
+      <p class="small muted">Full data: <a href="./challenge.json" target="_blank">challenge.json</a>.
+      Each entry is a genuine <code>tag = osf.state_hash(K, t, nonce)</code> from the same key.</p>
+      <pre id="preview" class="small" style="max-height:220px;overflow:auto;background:var(--panel2);
+        border:1px solid var(--line);border-radius:10px;padding:12px"></pre>
+    </details>
+  </div>
+</section>
+
+<section class="verify">
+  <h2><span class="n">04</span>Submit your forged tag</h2>
+  <p class="small muted">A 64-character hex string. Verified entirely in your browser.</p>
+  <input id="tag" type="text" placeholder="your forged tag* (64 hex chars)" autocomplete="off" spellcheck="false">
+  <button id="go">Verify</button>
+  <div id="result" class="info"></div>
+</section>
+
+<section>
+  <h2><span class="n">05</span>Rules &amp; claiming</h2>
+  <div class="grid2">
+    <div class="card small">
+      <strong>Reward (v1): the wall.</strong>
+      <p class="muted">Symbolic to start — a permanent spot in the
+      <a href="https://github.com/winnerbrothers/osf/blob/main/challenge/HALL_OF_FAME.md">Hall of Fame</a>
+      plus public credit. Cash bounty tiers may follow.</p>
+    </div>
+    <div class="card small">
+      <strong>To claim a solve</strong>
+      <p class="muted">Open a GitHub issue titled <code>SOLVED</code> with your <code>tag*</code> and a
+      short write-up of the method. We verify against <code>commit_tag</code> and add you to the wall.
+      <a href="https://github.com/winnerbrothers/osf/issues/new">Open an issue →</a></p>
+    </div>
+  </div>
+  <p class="small muted">Full rules: <a href="./README.md">challenge/README.md</a>. This challenge tests OSF's
+  transcript-unforgeability; it does not authorize attacks on any live system.</p>
+</section>
+
+<footer>
+  Winner Brothers Group · inventor/applicant LEE JUNGHOON (이정훈) · PCT WO 2025/127469 A1<br>
+  Code is dual-licensed (PolyForm Noncommercial + commercial). Commercial use requires a license.
+</footer>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+async function sha256hex(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+let COMMIT = null;
+(async () => {
+  try{
+    const d = await (await fetch('./challenge.json',{cache:'no-store'})).json();
+    COMMIT = d.commit_tag;
+    $('#ntr').textContent = d.transcripts.length;
+    $('#k-n').textContent = d.transcripts.length;
+    $('#k-t').textContent = d.challenge.t;
+    $('#k-non').textContent = d.challenge.n;
+    $('#k-ct').textContent = d.commit_tag;
+    $('#k-ck').textContent = d.commit_k;
+    $('#preview').textContent = JSON.stringify(d.transcripts.slice(0,6), null, 2)
+      + '\n… ' + (d.transcripts.length-6) + ' more (see challenge.json)';
+  }catch(e){ $('#result').className='lose'; $('#result').textContent='failed to load challenge.json'; }
+})();
+$('#go').addEventListener('click', async () => {
+  const r = $('#result');
+  const cand = $('#tag').value.trim().toLowerCase();
+  if(!/^[0-9a-f]{64}$/.test(cand)){ r.className='lose'; r.textContent='Expected 64 hex characters.'; return; }
+  if(!COMMIT){ r.className='lose'; r.textContent='Challenge not loaded yet.'; return; }
+  const h = await sha256hex(cand);
+  if(h === COMMIT){
+    r.className='win';
+    r.textContent='✔ FORGED. You produced tag*. OSF is broken by your submission — open a SOLVED issue to claim the wall.';
+  }else{
+    r.className='lose';
+    r.textContent='✘ Not it. SHA-256(your tag) ≠ commit_tag. Keep going.';
+  }
+});
+</script>
+</body>
+</html>
