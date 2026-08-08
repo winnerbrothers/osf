@@ -1,0 +1,42 @@
+[package]
+name = "osf-core"
+version = "0.1.0"
+edition = "2021"
+description = "OSF (Orbital State Function) core — the single source of truth for OSF-CANON v1. Byte-identical across Python, PHP, C/embedded bindings."
+license = "CC-BY-4.0"
+authors = ["LEE JUNGHOON (이정훈) <jason@winnerbrothers.org>"]
+repository = "https://github.com/winnerbrothers/osf"
+
+# cdylib -> C ABI shared object (php extension, embedded C/C++, apt/pecl)
+# staticlib -> weapon firmware / no_std-friendly static linking
+# rlib -> PyO3 and Rust consumers
+[lib]
+name = "osf_core"
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+# Deterministic math: the `libm` crate is a fixed fdlibm/MUSL port, so sin/cos
+# are bit-identical on every target — THIS is what guarantees cross-platform,
+# cross-language byte-identity that platform libm cannot.
+libm = "0.2"
+sha2 = "0.10"
+hmac = "0.12"
+hex = "0.4"
+# Optional: forward-secret messaging (ECDH P-256 + AES-256-GCM).
+p256 = { version = "0.13", features = ["ecdh"], optional = true }
+aes-gcm = { version = "0.10", optional = true }
+getrandom = { version = "0.2", optional = true }
+
+[features]
+default = ["rng"]
+rng = ["getrandom"]
+messaging = ["p256", "aes-gcm", "rng"]
+
+[dev-dependencies]
+serde_json = "1"
+# integration tests (tests/) are separate crates: they need hex re-declared here
+hex = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true

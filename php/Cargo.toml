@@ -1,0 +1,21 @@
+[package]
+name = "php-osf"
+version = "0.1.0"
+edition = "2021"
+description = "OSF native PHP extension — osf_state_hash() as a global function, like md5(). Built on the shared osf-core Rust crate."
+license = "CC-BY-4.0"
+authors = ["LEE JUNGHOON (이정훈) <jason@winnerbrothers.org>"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ext-php-rs = "0.12"
+# The single source of truth — guarantees this extension is byte-identical
+# to the Python wheel and the embedded C library.
+osf-core = { path = "../rust" }
+hex = "0.4"
+
+# Build a loadable extension:  cargo build --release
+# -> target/release/libphp_osf.so  (rename to osf.so; load via extension=osf.so)
+# See README.md for the PECL / apt (PPA) packaging path.

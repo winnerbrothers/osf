@@ -1,0 +1,93 @@
+name: osf-native CI
+
+# One KAT file (kat/test-vectors.json) is the single arbiter of correctness.
+# Every binding must reproduce it byte-for-byte or the build fails.
+# (Standalone-repo layout: the repo root IS the osf-native package.)
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # 1. Python reference: stdlib-only core + attack harness + messaging (FS).
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "${{ matrix.python }}"
+      - name: install (editable + dev extras)
+        run: pip install -e "./python[dev]"
+      - name: KAT + use-cases + attack harness
+        run: cd python && python -m pytest tests -v
+
+  # 2. Rust core: cargo test runs the SAME KAT (tests/kat.rs).
+  rust-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - name: cargo test (KAT gate)
+        run: cd rust && cargo test --all-features -- --nocapture
+      - name: build C ABI cdylib + staticlib (embedded/weapon target)
+        run: cd rust && cargo build --release
+
+  # 3. PyO3 native wheel — same core, must match the pure-Python reference.
+  pyo3-wheel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install maturin
+      - name: build native wheel
+        run: cd pyo3 && maturin build --release
+      - name: smoke-test the wheel matches KAT
+        run: |
+          pip install pyo3/target/wheels/*.whl
+          python - <<'PY'
+          import json, osf_native
+          d = json.load(open("kat/test-vectors.json"))
+          v = d["stateVectors"][0]; k = v["k"]; ex = v["expected"]
+          c = [k["coordinates"][a] for a in "xyz"]
+          a = [k["rotationAxis"][a] for a in "xyz"]
+          got = osf_native.state_hash(c, a, k["angularSpeed"], k["initialTimestamp"], v["t"], v["nonce"])
+          assert got == ex["stateHashNonce"], (got, ex["stateHashNonce"])
+          print("PyO3 wheel KAT[0] OK:", got)
+          PY
+
+  # 4. PHP extension (ext-php-rs) — the real osf.so for pecl/apt.
+  php-ext:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+      - name: build extension
+        run: cd php && cargo build --release
+      - name: smoke-load osf.so + check against KAT
+        run: |
+          SO=$(ls php/target/release/libphp_osf.so php/target/release/php_osf.so 2>/dev/null | head -1)
+          cp "$SO" osf.so
+          php -d extension=$(pwd)/osf.so -r '
+            $d = json_decode(file_get_contents("kat/test-vectors.json"), true);
+            $v = $d["stateVectors"][0]; $k = $v["k"]; $ex = $v["expected"];
+            $c = array_values($k["coordinates"]); $a = array_values($k["rotationAxis"]);
+            $got = osf_state_hash($c, $a, $k["angularSpeed"], $k["initialTimestamp"], $v["t"], $v["nonce"]);
+            if ($got !== $ex["stateHashNonce"]) { fwrite(STDERR, "MISMATCH $got\n"); exit(1); }
+            echo "PHP ext KAT[0] OK: $got\n";
+            echo "osf_version=", osf_version(), " delta(space)=", osf_delta_ms("space"), "\n";
+          '

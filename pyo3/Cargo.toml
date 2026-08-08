@@ -1,0 +1,18 @@
+[package]
+name = "osf-native-py"
+version = "0.1.0"
+edition = "2021"
+description = "PyO3 native-accelerated OSF bindings — byte-identical to planet-osf pure Python, built on the shared osf-core crate."
+license = "CC-BY-4.0"
+
+[lib]
+name = "osf_native"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"] }
+osf-core = { path = "../rust", features = ["messaging"] }
+
+# Build the wheel with:  maturin build --release
+# The pure-Python `planet-osf` package imports this module when present as a
+# fast path and falls back to pure Python otherwise (identical output — KAT).
