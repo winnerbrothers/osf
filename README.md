@@ -48,11 +48,39 @@ osf_state_hash(coords, axis, 90.0, 1700000000000, 1700000005000, "abc", out);
 
 | use-case | Python | what it does |
 |---|---|---|
-| raw primitive | `osf.state_hash(K,t,nonce)` | the `md5()`-equivalent |
+| **tag (recommended)** | `osf.tag(K,t,nonce,domain)` | **OSF-CANON v2** — HMAC-SHA-256, domain-separated |
+| raw tag (v1, compat) | `osf.state_hash(K,t,nonce)` | the `md5()`-equivalent; byte-compatible with deployed v1 |
 | login | `osf.login.*` | passwordless challenge/response |
 | messaging | `osf.messaging.*` | forward-secret sealed channel (ECDH P-256 + AES-256-GCM) |
 | coin / tx | `osf.coin.sign_tx / verify_tx` | transaction signing |
 | defense / weapons | `osf.defense.*` | on-device command auth: env-adaptive Δ (100µs–500ms), replay + clock-spoof rejection, HSM attest — **no server needed** |
+
+## What OSF is (and is not)
+
+OSF is a **time-synchronized mutual authentication protocol** built on standard
+primitives — SHA-256, HMAC-SHA-256, ECDH. It is **not** a cipher, **not** encryption, and
+**not** a new cryptographic primitive: it introduces no new hardness assumption, and we
+say so in the paper (we even prove the quaternion map is invertible from raw states, which
+is exactly why raw states are never transmitted). Security reduces jointly to the
+one-wayness of the hash and the entropy of the key.
+
+Its contribution is at the protocol layer, in the same sense that TLS 1.3 and Signal
+contribute architecture rather than primitives:
+
+- **mutual** authentication (TOTP is one-way)
+- **no secret is ever transmitted** — neither the key nor its function value
+- **authentication parameters are not written to server persistent storage**, so a disk /
+  DB / backup breach does not enable impersonation (a live-memory compromise is a
+  different matter — see [SECURITY.md](./SECURITY.md); HSM isolation recommended)
+- **continuous time** with an environment-adaptive window Δ (100 µs – 500 ms)
+- **serverless P2P** operation
+- forgery resistance ≈**159 bits** (conditional bound; grid capacity 235.6 bits)
+
+Two constructions ship: **v1** (`SHA-256(state ‖ nonce)`, frozen for compatibility) and
+**v2** (`HMAC-SHA-256`, domain-separated — [spec](./spec/OSF-CANON-v2.md)). v2 is
+recommended: its PRF security is a standard-model assumption rather than a random-oracle
+heuristic, and HMAC-SHA-256 is an *approved construction* under FIPS 140-3 and Korea's
+KCMVP — which matters, because certification programmes validate approved algorithms only.
 
 ## "Prove nobody can break it" — two honest halves
 

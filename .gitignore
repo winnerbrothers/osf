@@ -29,3 +29,7 @@ challenge/secret.json
 .vscode/
 *.log
 gen.log
+
+# internal policy doc must never be published
+docs-CLAIMS-POLICY.md
+CLAIMS-POLICY.md

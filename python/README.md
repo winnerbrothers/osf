@@ -11,8 +11,19 @@ pip install planet-osf
 import osf, time
 
 K = osf.keygen(int(time.time() * 1000))
-tag = osf.state_hash(K, int(time.time() * 1000), nonce="challenge-abc")   # md5()-style
+t = int(time.time() * 1000)
+
+tag = osf.tag(K, t, "challenge-abc")            # OSF-CANON v2 (recommended)
+old = osf.state_hash(K, t, nonce="challenge-abc")  # v1, byte-compatible with deployed systems
 ```
+
+**What this is:** a time-synchronized **mutual authentication protocol** built on
+SHA-256 / HMAC-SHA-256 / ECDH. It is not a cipher and not a new cryptographic
+primitive — it introduces no new hardness assumption, and its security reduces jointly
+to hash one-wayness and key entropy. The contribution is protocol-level: mutual
+authentication, no secret ever transmitted, authentication parameters never written to
+server persistent storage, continuous time with an environment-adaptive window Δ
+(100 µs – 500 ms), and serverless P2P operation.
 
 ## Use-cases (one-line wrappers)
 

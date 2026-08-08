@@ -26,11 +26,13 @@ from __future__ import annotations
 from ._canon import State, get_state_at, canonical_preimage, js_to_fixed_10
 from .key import Key, keygen
 from ._crypto import sha256_hex, hmac_sign, hmac_verify, random_nonce
-from . import login, messaging, coin, defense, attack
+from . import login, messaging, coin, defense, attack, v2
+from .v2 import tag, verify as verify_tag
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = [
     "State", "Key", "keygen", "state", "state_hash",
+    "tag", "verify_tag", "v2",
     "sha256_hex", "hmac_sign", "hmac_verify", "random_nonce",
     "login", "messaging", "coin", "defense", "attack",
     "get_state_at", "canonical_preimage", "js_to_fixed_10",
@@ -43,5 +45,9 @@ def state(key: "Key", timestamp_ms: int) -> "State":
 
 
 def state_hash(key: "Key", timestamp_ms: int, nonce: str | None = None) -> str:
-    """H(s_K(t) || nonce) — the OSF tag. The ``md5()``-equivalent call."""
+    """OSF-CANON **v1** tag: SHA-256(canonical(s_K(t)) || nonce).
+
+    Kept for byte-compatibility with deployed v1 systems. New deployments
+    should prefer :func:`osf.tag` (v2, HMAC-SHA-256) — see ``osf.tag``.
+    """
     return key.state_hash(timestamp_ms, nonce)

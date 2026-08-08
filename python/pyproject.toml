@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "planet-osf"
-version = "0.1.0"
-description = "OSF (Orbital State Function) — one-line time-synchronized mutual authentication, like md5() for login, messaging, coins and defense command auth."
+version = "0.2.0"
+description = "OSF — a one-line time-synchronized mutual authentication protocol built on SHA-256/HMAC-SHA-256, for login, messaging, transactions and on-device command auth."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "PolyForm-Noncommercial-1.0.0" }
