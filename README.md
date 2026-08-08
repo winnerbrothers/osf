@@ -73,21 +73,24 @@ for r in osf.attack.run_all():
     print(r["attack"], "broke_osf =", r["broke_osf"])   # all False
 ```
 
-## What is verified today vs. source-complete
+## Verification status
+
+All bindings are gated on one shared KAT (`kat/test-vectors.json`) and pass in
+CI ([GitHub Actions](.github/workflows/ci.yml) — run green across the matrix):
 
 | component | status |
 |---|---|
 | `kat/` ground-truth vectors from planet-core (120 state + 8 HMAC) | ✅ generated, self-checked |
-| Python `planet-osf` — core, login, messaging, coin, defense, attack | ✅ **20/20 tests pass** (`python -m unittest`), `pip install` verified in a clean venv |
+| Python `planet-osf` — core, login, messaging, coin, defense, attack | ✅ **20/20 tests pass** (Python 3.9 / 3.11 / 3.13 in CI); `pip install` verified in a clean venv |
 | OSF-CANON v1 determinism (Python == TS reference) | ✅ **120/120 hash-identical** |
-| Rust `osf-core` (+ C ABI `osf.h`, `tests/kat.rs`) | 🟡 source complete — compiles + KAT-gates in CI (no Rust toolchain on the authoring box) |
-| PyO3 wheel · PHP ext-php-rs extension | 🟡 source complete — built in CI (`.github/workflows/ci.yml`) |
+| Rust `osf-core` (+ C ABI `osf.h`, `tests/kat.rs`) | ✅ **`cargo test` KAT-gate green in CI** — 120/120 byte-identical, C ABI cdylib/staticlib build |
+| PyO3 native wheel | ✅ **built + KAT smoke green in CI** (byte-identical to the reference) |
+| PHP `ext-php-rs` extension (`osf.so`) | ✅ **builds, loads, KAT smoke green in CI** — `osf_state_hash()` global fn matches |
 | PECL / apt (PPA) / offline signed release | ⬜ packaging step (roadmap M4) |
 
-Honest note: the Rust/PHP artifacts are written to compile and pass the same KAT
-in CI; they were **not** compiled on the authoring machine (no Rust/PHP
-toolchain there). The determinism proof and the full attack harness **do** run
-today, in Python, against the deployed TS core's own output.
+Cross-implementation byte-identity (TS ↔ Rust ↔ Python ↔ PyO3 ↔ PHP) is
+therefore CI-verified on Linux. Remaining work is packaging/distribution
+(PyPI/PECL/apt) and the public challenge server — not correctness.
 
 ## Layout
 ```
