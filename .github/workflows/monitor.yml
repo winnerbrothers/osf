@@ -1,0 +1,32 @@
+name: monitor
+
+# Weekly usage-lead report for planet-osf (code search + PyPI stats).
+# Leads only — not proof of commercial use. Commits tools/usage-report.md.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"   # Mondays 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}   # authenticates the gh CLI for code search
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: generate usage report
+        run: python tools/monitor.py -o tools/usage-report.md
+      - name: commit if changed
+        run: |
+          git config user.name "osf-monitor[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/usage-report.md
+          git diff --cached --quiet || git commit -m "monitor: refresh usage report [skip ci]"
+          git push
