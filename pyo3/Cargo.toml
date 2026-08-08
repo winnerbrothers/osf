@@ -3,7 +3,7 @@ name = "osf-native-py"
 version = "0.1.0"
 edition = "2021"
 description = "PyO3 native-accelerated OSF bindings — byte-identical to planet-osf pure Python, built on the shared osf-core crate."
-license = "CC-BY-4.0"
+license = "LicenseRef-PolyForm-Noncommercial-1.0.0"
 
 [lib]
 name = "osf_native"

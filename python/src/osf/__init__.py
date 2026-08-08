@@ -18,7 +18,8 @@ Reference implementation of OSF-CANON v1, validated byte-for-byte against the
 planet-core TypeScript core (see tests/test_kat.py).
 
 Rights: Winner Brothers Group · inventor/applicant 이정훈 (LEE JUNGHOON) ·
-PCT WO 2025/127469 A1. Licensed CC BY 4.0.
+PCT WO 2025/127469 A1. Licensed PolyForm Noncommercial 1.0.0 (see LICENSE);
+commercial/production use requires a separate license (LICENSE-COMMERCIAL.md).
 """
 from __future__ import annotations
 

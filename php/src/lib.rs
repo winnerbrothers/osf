@@ -108,11 +108,7 @@ pub fn osf_version() -> String {
 
 #[php_module]
 pub fn get_module(module: ModuleBuilder) -> ModuleBuilder {
+    // Functions annotated with #[php_function] are auto-registered in
+    // ext-php-rs 0.12+ (the old `.function(wrap_function!(..))` API was removed).
     module
-        .function(wrap_function!(osf_state_hash))
-        .function(wrap_function!(osf_command_sign))
-        .function(wrap_function!(osf_command_verify))
-        .function(wrap_function!(osf_delta_ms))
-        .function(wrap_function!(osf_login_verify))
-        .function(wrap_function!(osf_version))
 }

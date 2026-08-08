@@ -6,7 +6,8 @@
 //! is why they are byte-identical.
 //!
 //! Rights: Winner Brothers Group · inventor/applicant 이정훈 (LEE JUNGHOON) ·
-//! PCT WO 2025/127469 A1. CC BY 4.0.
+//! PCT WO 2025/127469 A1. PolyForm Noncommercial 1.0.0 — see LICENSE;
+//! commercial/production use requires a separate license (LICENSE-COMMERCIAL.md).
 
 pub mod crypto;
 pub mod defense;

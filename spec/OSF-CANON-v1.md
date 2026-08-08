@@ -7,7 +7,7 @@ identical `stateHash` output for identical inputs. This document defines the
 byte-exact computation. Conformance = passing the KAT suite.
 
 > Rights: Winner Brothers Group · inventor/applicant 이정훈 (LEE JUNGHOON) ·
-> PCT WO 2025/127469 A1 · CC BY 4.0.
+> PCT WO 2025/127469 A1 · PolyForm Noncommercial 1.0.0 (commercial license available).
 
 ---
 

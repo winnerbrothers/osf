@@ -6,7 +6,7 @@ build-backend = "maturin"
 name = "osf-native"
 description = "PyO3 native-accelerated OSF bindings (byte-identical to planet-osf; shared osf-core Rust crate)."
 requires-python = ">=3.9"
-license = { text = "CC-BY-4.0" }
+license = { text = "PolyForm-Noncommercial-1.0.0" }
 classifiers = ["Programming Language :: Rust", "Topic :: Security :: Cryptography"]
 
 [tool.maturin]

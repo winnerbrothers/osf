@@ -3,7 +3,7 @@ name = "php-osf"
 version = "0.1.0"
 edition = "2021"
 description = "OSF native PHP extension — osf_state_hash() as a global function, like md5(). Built on the shared osf-core Rust crate."
-license = "CC-BY-4.0"
+license = "LicenseRef-PolyForm-Noncommercial-1.0.0"
 authors = ["LEE JUNGHOON (이정훈) <jason@winnerbrothers.org>"]
 
 [lib]

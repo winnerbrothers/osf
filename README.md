@@ -11,7 +11,10 @@ sudo add-apt-repository ppa:winnerbrothers/osf && sudo apt install php-osf
 ```
 
 > Rights: **Winner Brothers Group** · inventor/applicant **이정훈 (LEE JUNGHOON)** ·
-> **PCT WO 2025/127469 A1** · CC BY 4.0. `osf-core` is the single source of truth;
+> **PCT WO 2025/127469 A1** · **PolyForm Noncommercial 1.0.0** — free for
+> noncommercial use; **commercial/production use needs a separate license**
+> ([LICENSE-COMMERCIAL.md](./LICENSE-COMMERCIAL.md), [PATENTS.md](./PATENTS.md)).
+> `osf-core` is the single source of truth;
 > the registration record is a **secret** (OSF v1 is a symmetric primitive — see
 > the trust-model notes, not a public-key scheme).
 
@@ -108,3 +111,19 @@ node kat/generate_kat.mjs > kat/test-vectors.json
 # Rust core (needs a Rust toolchain):
 cd rust && cargo test --all-features
 ```
+
+## License
+
+Dual-licensed:
+
+- **Noncommercial** — free under **PolyForm Noncommercial 1.0.0**
+  ([LICENSE](./LICENSE)). Individuals, hobbyists, researchers, education,
+  government/nonprofit. Includes a patent license for noncommercial use.
+- **Commercial / production** — requires a **separate commercial license**
+  that bundles the patent grant for **PCT WO 2025/127469 A1**. See
+  [LICENSE-COMMERCIAL.md](./LICENSE-COMMERCIAL.md) and [PATENTS.md](./PATENTS.md).
+  Contact: official@winnerbrothers.org
+
+Copyright and patent are separate rights: a permissive copyright license would
+not by itself grant the right to practice the patent commercially — hence the
+explicit split above.

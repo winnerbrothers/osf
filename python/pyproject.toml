@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "OSF (Orbital State Function) — one-line time-synchronized mutual authentication, like md5() for login, messaging, coins and defense command auth."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "CC-BY-4.0" }
+license = { text = "PolyForm-Noncommercial-1.0.0" }
 authors = [{ name = "LEE JUNGHOON (이정훈)", email = "jason@winnerbrothers.org" }]
 keywords = ["osf", "authentication", "cryptography", "quaternion", "post-quantum", "defense", "zero-trust"]
 classifiers = [
@@ -16,6 +16,7 @@ classifiers = [
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3",
   "Topic :: Security :: Cryptography",
+  "License :: Other/Proprietary License",
 ]
 # Core / login / coin / defense need NO third-party deps (stdlib only).
 dependencies = []

@@ -3,7 +3,7 @@ name = "osf-core"
 version = "0.1.0"
 edition = "2021"
 description = "OSF (Orbital State Function) core — the single source of truth for OSF-CANON v1. Byte-identical across Python, PHP, C/embedded bindings."
-license = "CC-BY-4.0"
+license = "LicenseRef-PolyForm-Noncommercial-1.0.0"
 authors = ["LEE JUNGHOON (이정훈) <jason@winnerbrothers.org>"]
 repository = "https://github.com/winnerbrothers/osf"
 
