@@ -1,0 +1,53 @@
+name: publish-pypi
+
+# Publishes the pure-Python `planet-osf` package to PyPI on a version tag.
+#
+# Uses PyPI Trusted Publishing (OIDC) — NO API token/secret needed once you
+# configure the trusted publisher on PyPI (one-time). To use a token instead,
+# see the commented lines in the publish step.
+#
+# One-time PyPI setup (you do this in the browser, logged in as the project owner):
+#   1. https://pypi.org/manage/account/publishing/  ->  "Add a new pending publisher"
+#      - PyPI project name:  planet-osf
+#      - Owner:              <your GitHub org or user, e.g. winnerbrothers>
+#      - Repository name:    osf
+#      - Workflow name:      publish-pypi.yml
+#      - Environment name:   pypi
+#   2. Push a tag:  git tag v0.1.0 && git push origin v0.1.0
+#
+# (Confirm the name `planet-osf` is free at https://pypi.org/project/planet-osf/ first.)
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # required for Trusted Publishing (OIDC)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: sanity — run the test suite before publishing
+        run: |
+          pip install -e "./python[dev]"
+          cd python && python -m pytest tests -q
+
+      - name: build sdist + wheel
+        run: |
+          python -m pip install --upgrade build
+          cd python && python -m build --outdir dist
+
+      - name: publish to PyPI (Trusted Publishing)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist/
+          # To use an API token instead of Trusted Publishing, delete the
+          # `permissions:`/OIDC setup above and uncomment:
+          # password: ${{ secrets.PYPI_API_TOKEN }}
