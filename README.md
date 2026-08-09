@@ -5,8 +5,13 @@ One shared Rust core drives byte-identical bindings for **Python**, **PHP**, and
 **C/embedded** (UAV · satellite · weapon firmware).
 
 ```bash
-pip install planet-osf                       # Python — published
+pip install planet-osf     # Python (PyPI serves 0.1.0 — see the note below)
 ```
+
+> ⚠️ The published PyPI build is **0.1.0**, which predates the session layer and
+> the v2 tag. To use everything shown here, run from this checkout:
+> `pip install -e ./python` (or set `PYTHONPATH=$PWD/python/src`).
+> See [Quickstart](./docs/QUICKSTART.md).
 
 ```python
 import osf, time
@@ -55,7 +60,7 @@ php -S localhost:8422 examples/php/web_login.php    # login site, PHP
 
 | Target | Status |
 |---|---|
-| Python — `pip install planet-osf` | ✅ published |
+| Python — `pip install planet-osf` | 🟡 PyPI at 0.1.0; session/v2 need this checkout |
 | Rust — `osf-core` crate | ✅ source |
 | C / C++ / embedded — `osf.h` | ✅ source |
 | PHP extension — `extension=osf.so` | 🟡 builds in CI, build from source |
@@ -160,7 +165,7 @@ CI ([GitHub Actions](.github/workflows/ci.yml) — run green across the matrix):
 | component | status |
 |---|---|
 | `kat/` ground-truth vectors from planet-core (120 state + 8 HMAC) | ✅ generated, self-checked |
-| Python `planet-osf` — core, login, messaging, coin, defense, attack | ✅ **20/20 tests pass** (Python 3.9 / 3.11 / 3.13 in CI); `pip install` verified in a clean venv |
+| Python `planet-osf` — core, login, **session/auth**, messaging, coin, defense, attack | ✅ **53/53 tests pass** (Python 3.9 / 3.11 / 3.13 in CI), incl. session/auth |
 | OSF-CANON v1 determinism (Python == TS reference) | ✅ **120/120 hash-identical** |
 | Rust `osf-core` (+ C ABI `osf.h`, `tests/kat.rs`) | ✅ **`cargo test` KAT-gate green in CI** — 120/120 byte-identical, C ABI cdylib/staticlib build |
 | PyO3 native wheel | ✅ **built + KAT smoke green in CI** (byte-identical to the reference) |

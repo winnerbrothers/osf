@@ -6,12 +6,40 @@ Full reference: [`API.md`](./API.md) · Install details: [`INSTALL.md`](./INSTAL
 
 ---
 
-## Python
+## Before you start — run from this checkout
 
-### Install and run the tour
+> **PyPI currently serves 0.1.0**, which predates the session layer and the v2
+> tag. `pip install planet-osf` will give you a build without `osf.auth`,
+> `osf.session`, or `osf.tag`, and the login examples below will fail with
+> `AttributeError`. Until a newer release is published, run from this
+> repository:
 
 ```bash
-pip install planet-osf
+git clone https://github.com/winnerbrothers/osf && cd osf
+
+# either install this checkout in editable mode …
+pip install -e ./python
+
+# … or skip installing entirely and point Python at the source
+export PYTHONPATH=$PWD/python/src        # Windows: set PYTHONPATH=%CD%\python\src
+```
+
+Check what you actually have:
+
+```bash
+python -c "import osf; print(osf.__version__, hasattr(osf,'auth'), hasattr(osf,'tag'))"
+# want: 0.3.0 True True
+```
+
+PHP needs nothing at all — `php/osf.php` is self-contained.
+
+---
+
+## Python
+
+### Run the tour
+
+```bash
 python examples/python/quickstart.py
 ```
 
