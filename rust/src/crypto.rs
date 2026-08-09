@@ -1,3 +1,10 @@
+// OSF (Orbital State Function)
+// Copyright (c) 2026 Winner Brothers Group. All rights reserved.
+// Inventor / applicant: LEE JUNGHOON.  Patent: PCT WO 2025/127469 A1.
+// Licensed under PolyForm Noncommercial 1.0.0 - commercial or production use
+// requires a separate license including a patent grant. See LICENSE-COMMERCIAL.md.
+// https://github.com/winnerbrothers/osf
+
 //! Hash / HMAC primitives (RustCrypto; no OpenSSL). Byte-compatible with the
 //! TS core and the Python reference — verified by the KAT suite.
 

@@ -1,3 +1,10 @@
+// OSF (Orbital State Function)
+// Copyright (c) 2026 Winner Brothers Group. All rights reserved.
+// Inventor / applicant: LEE JUNGHOON.  Patent: PCT WO 2025/127469 A1.
+// Licensed under PolyForm Noncommercial 1.0.0 - commercial or production use
+// requires a separate license including a patent grant. See LICENSE-COMMERCIAL.md.
+// https://github.com/winnerbrothers/osf
+
 //! KAT determinism: the Rust core must reproduce the deployed TypeScript core
 //! (planet-core) byte-for-byte on every known-answer vector. This is the CI
 //! gate that guarantees the native extension is byte-identical to the

@@ -1,14 +1,30 @@
 # OSF — Orbital State Function, callable in one line
 
-Use OSF like `md5()`: install a native module, call a function, done. One
-shared Rust core drives byte-identical bindings for **Python**, **PHP**, and
-**C/embedded (weapons · UAV · satellite firmware)**.
+A **time-synchronized mutual authentication protocol** you can call like `md5()`.
+One shared Rust core drives byte-identical bindings for **Python**, **PHP**, and
+**C/embedded** (UAV · satellite · weapon firmware).
 
+```bash
+pip install planet-osf                       # Python — published
 ```
-pip install planet-osf              # Python  (PyPI)
-pecl install osf                    # PHP     (native extension)
-sudo add-apt-repository ppa:winnerbrothers/osf && sudo apt install php-osf
+
+```python
+import osf, time
+K   = osf.keygen(int(time.time() * 1000))              # generate a key
+tag = osf.tag(K, int(time.time() * 1000), "challenge") # authenticate. one line.
 ```
+
+📖 **[Installation](./docs/INSTALL.md)** · **[Full API reference](./docs/API.md)** ·
+[Spec](./spec/OSF-CANON-v2.md) · [Security model](./SECURITY.md) ·
+[Break-it challenge](https://winnerbrothers.github.io/osf/)
+
+| Target | Status |
+|---|---|
+| Python — `pip install planet-osf` | ✅ published |
+| Rust — `osf-core` crate | ✅ source |
+| C / C++ / embedded — `osf.h` | ✅ source |
+| PHP extension — `extension=osf.so` | 🟡 builds in CI, build from source |
+| `pecl install osf` · `apt install php-osf` | ⬜ planned |
 
 > Rights: **Winner Brothers Group** · inventor/applicant **이정훈 (LEE JUNGHOON)** ·
 > **PCT WO 2025/127469 A1** · **PolyForm Noncommercial 1.0.0** — free for

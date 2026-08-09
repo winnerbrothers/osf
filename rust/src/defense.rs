@@ -1,3 +1,10 @@
+// OSF (Orbital State Function)
+// Copyright (c) 2026 Winner Brothers Group. All rights reserved.
+// Inventor / applicant: LEE JUNGHOON.  Patent: PCT WO 2025/127469 A1.
+// Licensed under PolyForm Noncommercial 1.0.0 - commercial or production use
+// requires a separate license including a patent grant. See LICENSE-COMMERCIAL.md.
+// https://github.com/winnerbrothers/osf
+
 //! On-device command authentication (weapon / UAV / UGV / satellite).
 //! Δ table and sign/verify string layout mirror the deployed planet-core
 //! Defense API exactly, so an osf-core device interoperates with /api/v1/defense.
