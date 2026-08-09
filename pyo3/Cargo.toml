@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 description = "PyO3 native-accelerated OSF bindings — byte-identical to planet-osf pure Python, built on the shared osf-core crate."
 license = "LicenseRef-PolyForm-Noncommercial-1.0.0"
+authors = ["LEE JUNGHOON (이정훈) <jason@winnerbrothers.org>"]
+repository = "https://github.com/winnerbrothers/osf"
+# Copyright (c) 2026 Winner Brothers Group. Patent: PCT WO 2025/127469 A1.
+# Commercial or production use requires a separate license (LICENSE-COMMERCIAL.md).
 
 [lib]
 name = "osf_native"
