@@ -26,13 +26,15 @@ from __future__ import annotations
 from ._canon import State, get_state_at, canonical_preimage, js_to_fixed_10
 from .key import Key, keygen
 from ._crypto import sha256_hex, hmac_sign, hmac_verify, random_nonce
-from . import login, messaging, coin, defense, attack, v2
+from . import login, messaging, coin, defense, attack, v2, session, auth
 from .v2 import tag, verify as verify_tag
+from .auth import Authenticator
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 __all__ = [
     "State", "Key", "keygen", "state", "state_hash",
     "tag", "verify_tag", "v2",
+    "session", "auth", "Authenticator",
     "sha256_hex", "hmac_sign", "hmac_verify", "random_nonce",
     "login", "messaging", "coin", "defense", "attack",
     "get_state_at", "canonical_preimage", "js_to_fixed_10",

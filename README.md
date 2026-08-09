@@ -14,9 +14,44 @@ K   = osf.keygen(int(time.time() * 1000))              # generate a key
 tag = osf.tag(K, int(time.time() * 1000), "challenge") # authenticate. one line.
 ```
 
-📖 **[Installation](./docs/INSTALL.md)** · **[Full API reference](./docs/API.md)** ·
-[Spec](./spec/OSF-CANON-v2.md) · [Security model](./SECURITY.md) ·
-[Break-it challenge](https://winnerbrothers.github.io/osf/)
+Passwordless login with a real session — the whole flow:
+
+```python
+from osf.auth import Authenticator
+auth = Authenticator()
+
+client_key, record = auth.enroll("alice")               # sign-up
+challenge = auth.challenge()                            # server
+proof     = Authenticator.prove(client_key, challenge)  # client (holds the key)
+token     = auth.login("alice", challenge, proof)       # server -> session token
+
+auth.whoami(token)                # 'alice'
+auth.logout(token)                # session ends
+auth.logout_everywhere("alice")   # every session ends
+```
+
+Same thing in PHP — **pure PHP, no extension, no Composer**:
+
+```php
+require 'osf.php';
+[$key, $record] = $auth->enroll('alice');
+$token = $auth->login('alice', $ch, OSF\Auth::prove($key, $ch));
+$auth->whoami($token);   // 'alice'
+$auth->logout($token);
+```
+
+Run a working login site right now:
+
+```bash
+python examples/python/quickstart.py                # the full tour
+python examples/python/web_login.py                 # http://localhost:8421
+php    examples/php/quickstart.php                  # same tour, PHP
+php -S localhost:8422 examples/php/web_login.php    # login site, PHP
+```
+
+📖 **[Quickstart](./docs/QUICKSTART.md)** · **[Full API reference](./docs/API.md)** ·
+[Installation](./docs/INSTALL.md) · [Spec](./spec/OSF-CANON-v2.md) ·
+[Security model](./SECURITY.md) · [Break-it challenge](https://winnerbrothers.github.io/osf/)
 
 | Target | Status |
 |---|---|

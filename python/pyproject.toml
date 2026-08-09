@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "planet-osf"
-version = "0.2.0"
+version = "0.3.0"
 description = "OSF — a one-line time-synchronized mutual authentication protocol built on SHA-256/HMAC-SHA-256, for login, messaging, transactions and on-device command auth."
 readme = "README.md"
 requires-python = ">=3.9"

@@ -36,3 +36,6 @@ CLAIMS-POLICY.md
 
 # 내부 작업 노트는 공개 저장소에 포함하지 않는다 (비공개 docs/ 에 보관)
 작업보고-*.md
+
+# PHP demo state
+examples/php/_osf_demo/
