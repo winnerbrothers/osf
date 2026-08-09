@@ -81,12 +81,31 @@ speeds {1 … 36000} deg/s, and elapsed times {0 … ~1 year}:
 | Python final `stateHash` identical to V8 | **120 / 120** |
 | HMAC-SHA-256 identical | **8 / 8** |
 
-**Interpretation.** Different platform libm implementations (V8's fdlibm vs
-CPython's MSVCRT libm) disagree by ≤ 1 ULP in the raw f64 state for 4 of 120
-vectors. `toFixed(10)` absorbs that drift in **all** cases at these magnitudes,
-so the hash is identical. **But the margin is finite** — at larger magnitudes or
-on other libm implementations a 1-ULP difference could land on a rounding
-boundary and flip the 10th digit.
+**Interpretation.** Different libm implementations disagree by ~1 ULP in the raw
+f64 state. Measured across the same 120 vectors:
+
+| implementation | libm | raw f64 bit-identical to V8 | `stateHash` identical |
+|---|---|---|---|
+| Python on Linux (glibc) | glibc | **120 / 120** | 120 / 120 |
+| Python on Windows | MSVCRT | 116 / 120 | 120 / 120 |
+| Rust `osf-core` | `libm` crate (fdlibm port) | 102 / 120 | 120 / 120 |
+
+So the raw state differs between implementations on up to 15% of inputs, and
+`toFixed(10)` absorbs every one of them. **The margin is finite and has been
+measured.** Over the 636 non-zero serialized components in the KAT set, the
+distance from each value to the nearest rounding boundary is:
+
+```
+minimum  10.31 ULP     1st percentile  42.9 ULP     median  211,266 ULP
+components within 5 ULP of a boundary:  0 / 636
+```
+
+The closest call is therefore ~10× the disagreement between implementations,
+which is why no mismatch occurs. But the headroom is not unlimited: the
+quantisation step (10⁻¹⁰) is only ~900 ULP wide for position components at
+‖p₀‖ ≈ 10³, so a given component has a ~0.2% chance of sitting within 1 ULP of
+a boundary. A pair of implementations that disagree at that component would
+then produce different tags.
 
 **Consequence (normative).** Cross-platform, cross-language byte-identity is
 guaranteed by all production bindings linking ONE math implementation — the
