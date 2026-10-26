@@ -1,6 +1,6 @@
 # OSF usage report — planet-osf
 
-_Generated 2026-10-19 16:07 UTC. Leads, not proof of commercial use. Follow up manually + assert patent/license where warranted._
+_Generated 2026-10-26 15:45 UTC. Leads, not proof of commercial use. Follow up manually + assert patent/license where warranted._
 
 ## GitHub code — repos referencing planet-osf
 
@@ -8,12 +8,12 @@ _Generated 2026-10-19 16:07 UTC. Leads, not proof of commercial use. Follow up m
 
 - szabgab/pydigger-data
 
-`import osf` (python) hits: **6800**
+`import osf` (python) hits: **6736**
 
 ## PyPI downloads (aggregate, no identity)
 
-- last day: **0**
-- last week: **5**
+- last day: **1**
+- last week: **8**
 - last month: **12**
 
 ## GitHub dependents (manual)
