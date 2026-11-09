@@ -1,15 +1,15 @@
 # OSF usage report — planet-osf
 
-_Generated 2026-11-02 19:04 UTC. Leads, not proof of commercial use. Follow up manually + assert patent/license where warranted._
+_Generated 2026-11-09 19:26 UTC. Leads, not proof of commercial use. Follow up manually + assert patent/license where warranted._
 
 ## GitHub code — repos referencing planet-osf
 
-_error: gh: try again in 435.049521235s (HTTP 429)_
+_error: gh: try again in 49.431716005s (HTTP 429)_
 
 ## PyPI downloads (aggregate, no identity)
 
-- last day: **3**
-- last week: **4**
+- last day: **1**
+- last week: **3**
 - last month: **12**
 
 ## GitHub dependents (manual)
